@@ -42,13 +42,31 @@ With this script, you can safely update Nextcloud: only the admin logs in to tho
 
 ## Usage
 
-1. Save the script as nextcloud-maintenance.sh anywhere on your Debian server running Nextcloud – the location is up to you.
-Just make sure to set the NEXTCLOUD_DIR variable in the script to point to the directory where your Nextcloud installation is located (e.g. /var/www/nextcloud).
-2. Make the script executable:  
-   chmod +x nextcloud-maintenance.sh
-3. Run the script with sudo:  
-   sudo ./nextcloud-maintenance.sh
-4. Follow the on-screen menu prompts.
+Here’s how simple it is to get started:
+```bash
+git clone https://github.com/ffm3/nextcloud-maintenance.sh
+cd nextcloud-maintenance.sh
+chmod +x nextcloud-maintenance.sh
+# (Optional) Edit the script to set your Nextcloud directory, for example:
+#   NEXTCLOUD_DIR="/var/www/nextcloud"
+sudo ./nextcloud-maintenance.sh
+```
+
+When you start the script, it asks for the admin username you use. That way, when you disable all users (option 2), the admin stays active. This lets you safely test everything as admin after updates before re-enabling all other users (option 3).
+
+Automatic Configuration: The script automatically reads database credentials from config.php, so no manual input is needed.
+
+After that, the script displays a menu with the following options:
+```bash
+Option 1: List all users and their status (disabled/enabled)
+Option 2: Disable all users except admin
+Option 3: Enable all users
+Option 4: Turn maintenance mode ON
+Option 5: Turn maintenance mode OFF
+Option U: Perform a Nextcloud update
+Option D: Convert database tables to the dynamic row format required from Nextcloud version 31+
+```
+This script uses the standard occ commands and automates common steps to make maintenance safe and worry-free.
 
 ---
 
