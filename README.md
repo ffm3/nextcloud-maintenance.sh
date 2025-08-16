@@ -4,6 +4,16 @@
 
 ---
 
+## Benefits / Why use this script?
+
+One of the greatest advantages of this script is the power and peace of mind it brings to Nextcloud administrators during updates. Imagine: before you update, with just a few commands, you can switch Nextcloud into maintenance mode and temporarily deactivate all users except the admin account you specify at the start.
+
+Why is this so important? After an update, you may not immediately know if everything is working perfectly. Normally, if you disable maintenance mode too soon, users could start making changes—uploading files, modifying calendars, and updating data. But what if you discover a problem and need to restore a backup? Any changes made in the meantime could be lost, potentially causing data conflicts or even frustration among your users.
+
+With this script, you can safely update Nextcloud: only the admin logs in to thoroughly test all features, check functionality, and decide—without pressure—whether it’s time to re-enable everyone or revert changes if needed. No accidental data loss, no unwanted surprises. This tool gives you full control, prevents headaches, and creates a smooth, worry-free update experience for both administrators and users. Try it and experience the confidence that comes from knowing your system and your users’ data are truly protected during every maintenance window.
+
+---
+
 ## Features
 
 - **User Management:** List, disable, and enable all users except admin to prevent data changes during maintenance.
@@ -16,20 +26,24 @@
 
 ## Requirements
 
-- Nextcloud installation (tested on Debian Buster/Bullseye/Bookworm with Apache2, InnoDB, and PHP 8.0–8.3).  
-  *Please report if used with other setups.*
+- A Nextcloud installation (tested on Debian Buster, Bullseye, and Bookworm with Apache2, InnoDB, and PHP 8.0–8.3).  
+  *If you use a different setup, please let us know!*
 - Apache2 with InnoDB support
 - PHP 8.0, 8.1, 8.2, or 8.3
 - Nextcloud versions 27 to 31
 - MySQL or MariaDB
 - Bash shell with sudo rights
+- The default Nextcloud web server user (`www-data`).  
+  *If your setup uses a different user, adjust the script accordingly.*
+- By default, the script uses `sudo -u www-data php occ`.  
+  *On some systems you might need to use a specific PHP version, e.g., `php8.2`, instead of `php`. You can check your active PHP version with `php -i | grep "Loaded Configuration File"` and ensure it matches your Nextcloud setup.*
 
 ---
 
 ## Usage
 
-1. Save the script as `nextcloud-maintenance.sh` in the default Nextcloud directory `/var/www/nextcloud`.  
-   *(Adjust the `NEXTCLOUD_DIR` variable if your installation path is different.)*
+1. Save the script as nextcloud-maintenance.sh anywhere on your Debian server running Nextcloud – the location is up to you.
+Just make sure to set the NEXTCLOUD_DIR variable in the script to point to the directory where your Nextcloud installation is located (e.g. /var/www/nextcloud).
 2. Make the script executable:  
    chmod +x nextcloud-maintenance.sh
 3. Run the script with sudo:  
