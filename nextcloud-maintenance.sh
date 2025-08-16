@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-
+printf "============\n"
 # Nextcloud directory as variable (adjust this to your Nextcloud installation path)
 NEXTCLOUD_DIR="/var/www/nextcloud"
 
@@ -22,7 +22,6 @@ DB_PASS=$(sed -n "s/.*'dbpassword' => '\([^']*\)'.*/\1/p" config/config.php)
 
 # Unset sensitive variables at script exit
 trap "unset DB_USER DB_NAME DB_PASS NC_ADMIN_USER" EXIT
-
 # Ask for Nextcloud admin user with default 'admin'
 read -rp "Please enter the Nextcloud admin user (default: admin): " NC_ADMIN_USER
 NC_ADMIN_USER=${NC_ADMIN_USER:-admin}
@@ -32,12 +31,12 @@ printf "The administrator '%s' will be excluded from changes.\n\n" "$NC_ADMIN_US
 printf "${BLUE}============${RESET}\n"
 printf "${BOLD}   NEXTCLOUD MAINTENANCE${RESET}\n"
 printf "${BLUE}============${RESET}\n"
-printf " ${GREEN}INFO${RESET} Nextcloud DIR  %s\n" "$NEXTCLOUD_DIR"
-printf " ${GREEN}INFO${RESET} DB %s\n" "$DB_NAME"
-printf " ${GREEN}INFO${RESET} DB-User  %s\n" "$DB_USER"
+printf " ${GREEN}INFO${RESET} %-12s = %s\n" "Nextcloud DIR" "$NEXTCLOUD_DIR"
+printf " ${GREEN}INFO${RESET} %-12s = %s\n" "DB Name"       "$DB_NAME"
+printf " ${GREEN}INFO${RESET} %-12s = %s\n" "DB User"       "$DB_USER"
 printf "${BLUE}============${RESET}\n"
 printf "${RED}   If you disable all users, remember which users were already disabled.\n"
-printf "   Later, you can only enable all users at once.\n"
+printf "   Note that with this script, you can only enable all users at once later on.\n"
 printf "   In Nextcloud, you can disable individual users again.${RESET}\n"
 
 # Function to safely run MySQL command and exit on failure
@@ -50,19 +49,18 @@ mysql_exec() {
 
 # Infinite loop for menu selection
 while true; do
+    printf "${BLUE}========================================${RESET}\n"
     printf "%bPlease choose an option:%b\n" "$BOLD" "$RESET"
     echo "1. Show users"
     echo "2. Disable all users except '$NC_ADMIN_USER'"
     echo "3. Enable all users"
     echo "4. Maintenance Mode ON"
     echo "5. Maintenance Mode OFF"
-    printf "${RED}============${RESET}\n"
     echo "U. Nextcloud Update (create snapshot or backup first)"
-    echo "============"
     echo "D. Convert database tables to dynamic row format"
-    echo "    (only if Nextcloud version 31 or later requires this)"
-    echo "============"
+    echo "   (only if Nextcloud version 31 or later requires this)"
     printf "${GREEN}${BOLD}E. Exit${RESET}\n"
+    printf "${BLUE}========================================${RESET}\n"
 
     read -rp "Input: " choice
 
