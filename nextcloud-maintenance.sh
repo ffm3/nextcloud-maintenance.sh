@@ -56,6 +56,8 @@ while true; do
     echo "3. Enable all users"
     echo "4. Maintenance Mode ON"
     echo "5. Maintenance Mode OFF"
+    echo "6. Update DB (sudo -u www-data php occ upgrade)"
+    echo "7. Update Apps (sudo -u www-data php occ app:update --all)"
     echo "U. Nextcloud Update (create snapshot or backup first)"
     echo "D. Convert database tables to dynamic row format"
     echo "   (only if Nextcloud version 31 or later requires this)"
@@ -131,7 +133,22 @@ while true; do
             sudo -u www-data php occ maintenance:mode --off
             systemctl restart apache2
             ;;
+        6)
+            # Plugins Update
+            echo -e "${BLUE}============================================================${RESET}"
+            echo "DB Update."
+            sudo -u www-data php occ upgrade
 
+            systemctl restart apache2
+            ;;
+        7)
+            # Plugins Update
+            echo -e "${BLUE}============================================================${RESET}"
+            echo "Plungins Update."
+            sudo -u www-data php occ app:update --all
+
+            systemctl restart apache2
+            ;;
         [Uu])
             read -rp "Was a VM snapshot created? (y/n) " snapshot_confirm
             if [[ "$snapshot_confirm" != [Yy] ]]; then
